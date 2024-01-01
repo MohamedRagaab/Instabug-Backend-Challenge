@@ -1,7 +1,7 @@
 module Api
   module V1
     class MessagesController < ApplicationController
-      before_action :find_chat, except: :search
+      before_action :find_chat
 
       def create
         @message = @chat.messages.new(message_params)
@@ -15,15 +15,17 @@ module Api
 
       def search
         query = {
-          bool: {
-            must: [
-              { multi_match: { query: params[:q], fields: ['body'] } },
-              { term: { chat_id: @chat.id } }
-            ]
+          query: {
+            bool: {
+              filter: [
+                { term: { chat_id: @chat.id } },
+                { multi_match: { query: params[:q], fields: ['body'] } }
+              ]
+            }
           }
         }
 
-        @messages = Message.search(query)
+        @messages = Message.search(query).records
 
         render json: @messages, status: :ok
       end
@@ -34,7 +36,7 @@ module Api
         @chat = Chat.joins(:chat_application)
                     .find_by(chat_applications: { token: params[:application_token] }, number: params[:chat_number])
 
-        render json: { errors: 'Chat not found' }, status: :not_found unless @chat
+        render json: { errors: 'Message not found' }, status: :not_found unless @chat
       end
 
       def message_params

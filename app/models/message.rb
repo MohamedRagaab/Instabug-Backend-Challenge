@@ -17,7 +17,11 @@ class Message < ApplicationRecord
   end
 
   def as_indexed_json(_options = {})
-    as_json(only: [:body, :number, :chat_id])
+    {
+      'body' => body,
+      'number' => number,
+      'chat_id' => chat_id
+    }
   end
 
   private
