@@ -3,6 +3,31 @@ module Api
     class MessagesController < ApplicationController
       before_action :find_chat
 
+      def index
+        @messages = @chat.messages
+        render json: { messages: @messages.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
+      end
+
+      def show
+        @message = @chat.messages.find_by(number: params[:id])
+
+        if @message
+          render json: { message: @message.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
+        else
+          render json: { errors: 'Message not found' }, status: :not_found
+        end
+      end
+
+      def update
+        @message = @chat.messages.find_by(number: params[:id])
+
+        if @message&.update(message_params)
+          render json: { message: 'Message updated successfully', message: @message.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
+        else
+          render json: { errors: 'Unable to update message' }, status: :unprocessable_entity
+        end
+      end
+
       def create
         @message = @chat.messages.new(message_params)
 
@@ -27,7 +52,7 @@ module Api
 
         @messages = Message.search(query).records
 
-        render json: @messages, status: :ok
+        render json: { messages: @messages.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
       end
 
       private

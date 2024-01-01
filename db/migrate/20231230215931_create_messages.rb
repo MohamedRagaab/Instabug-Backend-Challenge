@@ -8,5 +8,8 @@ class CreateMessages < ActiveRecord::Migration[7.1]
     end
 
     add_foreign_key :messages, :chats, column: :chat_id
+
+    add_index :messages, :chat_id
+    add_index :messages, [:chat_id, :number], unique: true
   end
 end

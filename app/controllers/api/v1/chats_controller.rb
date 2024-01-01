@@ -3,6 +3,11 @@ module Api
     class ChatsController < ApplicationController
       before_action :find_chat_application
 
+      def index
+        @chats = @chat_application.chats
+        render json: { chats: @chats.as_json(except: :id) }, status: :ok
+      end
+
       def create
         @chat = @chat_application.chats.new
 
