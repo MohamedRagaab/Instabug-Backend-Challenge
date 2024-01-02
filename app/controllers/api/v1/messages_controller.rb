@@ -29,13 +29,10 @@ module Api
       end
 
       def create
-        @message = @chat.messages.new(message_params)
+        # Enqueue the worker instead of directly creating the message
+        MessageCreationWorker.perform_async(@chat.id, message_params[:body])
 
-        if @message.save
-          render json: { message: 'Message created successfully', message: { number: @message.number } }, status: :created
-        else
-          render json: { errors: @message.errors.full_messages }, status: :unprocessable_entity
-        end
+        render json: { message: 'Message creation job enqueued successfully' }, status: :accepted
       end
 
       def search

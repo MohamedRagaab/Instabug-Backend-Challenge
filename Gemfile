@@ -27,6 +27,8 @@ gem "turbo-rails"
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
+# install sidekiq queue system
+gem 'sidekiq'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"

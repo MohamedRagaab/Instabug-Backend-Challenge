@@ -9,13 +9,10 @@ module Api
       end
 
       def create
-        @chat = @chat_application.chats.new
+        # Enqueue the worker instead of directly creating the chat
+        ChatCreationWorker.perform_async(@chat_application.id)
 
-        if @chat.save
-          render json: { message: 'Chat created successfully', chat: { number: @chat.number } }, status: :created
-        else
-          render json: { errors: @chat.errors.full_messages }, status: :unprocessable_entity
-        end
+        render json: { message: 'Chat creation job enqueued successfully' }, status: :accepted
       end
 
       private
