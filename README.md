@@ -95,12 +95,13 @@ docker-compose up
 </div>
 
 ## Task Checklist
-- [ ] Application Endpoints
-- [ ] Chat Endpoints
-- [ ] Message Endpoint
-- [ ] Using elasticsearch for searching messages
-- [ ] Using queuing system (Sidekiq)
-- [ ] Containerize the app (docker-compose.yml)
-- [ ] Using in-memory DB (Redis)
-- [ ] Writing a Readme file
+- [x] Application Endpoints
+- [x] Chat Endpoints
+- [x] Message Endpoint
+- [x] Using elasticsearch for searching messages
+- [x] Using queuing system (Sidekiq)
+- [x] Counts chat and message numbers in background (cron job)
+- [x] Containerize the app (docker-compose.yml)
+- [x] Using in-memory DB (Redis)
+- [x] Writing a Readme file
 
