@@ -39,21 +39,26 @@ module Api
       end
 
       def search
-        query = {
-          query: {
-            bool: {
-              filter: [
-                { term: { chat_id: @chat.id } },
-                { multi_match: { query: params[:q], fields: ['body'] } }
-              ]
+        if @chat.messages.any?
+          query = {
+            query: {
+              bool: {
+                filter: [
+                  { term: { chat_id: @chat.id } },
+                  { multi_match: { query: params[:q], fields: ['body'] } }
+                ]
+              }
             }
           }
-        }
 
-        @messages = Message.search(query).records
+          @messages = Message.search(query).records
 
-        render json: { messages: @messages.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
+          render json: { messages: @messages.as_json(only: [:number, :body, :created_at, :updated_at]) }, status: :ok
+        else
+          render json: { messages: [], notice: 'No messages in the chat' }, status: :ok
+        end
       end
+
 
       private
 
