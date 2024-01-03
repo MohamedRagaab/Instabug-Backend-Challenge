@@ -3,7 +3,7 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV['MYSQL_USERNAME'] || 'root' %>
-  password: <%= ENV['MYSQL_PASSWORD'] || '1234' %>
+  password: <%= ENV['MYSQL_PASSWORD'] || 'root_password' %>
   host: <%= ENV['MYSQL_HOST'] || 'mysql' %>
   database: <%= ENV['MYSQL_DATABASE'] || 'chat_system_DB' %>
   port: <%= ENV['MYSQL_PORT'] || 3306 %>

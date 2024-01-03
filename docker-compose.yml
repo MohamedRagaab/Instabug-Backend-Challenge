@@ -4,12 +4,9 @@ services:
   # MySQL service
   mysql:
     image: mysql:latest
-    container_name: mysql
+    restart: always
     environment:
-      MYSQL_USER: ${MYSQL_USERNAME}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: root_password
     ports:
       - "3306:3306"
 
@@ -41,12 +38,12 @@ services:
     container_name: sidekiq
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_USERNAME: ${MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: 52e2333ee247fada908ec92322556a6d
+      MYSQL_HOST: mysql
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root_password
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - elasticsearch
 
@@ -57,12 +54,12 @@ services:
     command: "bash -c 'while :; do sleep 120 && bundle exec rake update_counts:chats_and_messages_counts; done'"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_USERNAME: ${MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: 52e2333ee247fada908ec92322556a6d
+      MYSQL_HOST: mysql
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root_password
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - rails
 
@@ -73,16 +70,17 @@ services:
     command: >
       bash -c "
          /usr/local/bin/wait-for-it -t 0 mysql:3306 &&
+         ./bin/rails db:create && ./bin/rails db:migrate &&
         ./bin/rails server
       "
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_USERNAME: ${MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: 52e2333ee247fada908ec92322556a6d
+      MYSQL_HOST: mysql
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root_password
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "3000:3000"
     depends_on:
