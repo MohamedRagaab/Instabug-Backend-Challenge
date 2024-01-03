@@ -11,8 +11,8 @@
 ## Cloning the repo and starting the app
 * clone the repository and open the project in visual studio or any I.
 ``` bash
-git clone https://github.com/MohamedRagaab/Vodafone-Registration-Login-Task.git
-cd Vodafone-Registration-Login-Task
+git clone https://github.com/MohamedRagaab/Instabug-Backend-Challenge.git
+cd Instabug-Backend-Challenge
 ```
 ## Usage 🚀
 * Build the docker image and run the container!
