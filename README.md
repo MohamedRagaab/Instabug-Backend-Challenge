@@ -65,55 +65,42 @@ docker-compose up
         PUT /api/v1/applications/:token/chats/:number/messages/:id
         ```
     - List all messages under a specific chat:
-          ``` bash
+        ``` bash
         GET /api/v1/applications/:token/chats/:number/messages
-        ```  
+        ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Example 🖼️
-* Register your account
+## Examples 🖼️
+* Create an application
 <div align='center'>
-<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/1e8ec78e-3caa-4ab1-b837-c1c1f7ee54f7">
+<img height="350px" src="https://github.com/MohamedRagaab/Instabug-Backend-Challenge/assets/38363762/1d3e1d04-67e0-48a2-a48b-e64d14f18808">
 <hr/>
 </div>
 
-* Login with your credentials
+* Create a chat under the app
 <div align='center'>
-<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/1f45f519-48f5-4e63-95ec-420fce4520c2">
+<img height="350px" src="https://github.com/MohamedRagaab/Instabug-Backend-Challenge/assets/38363762/26033bfa-6fcc-4a61-a628-559fc7adfaf3">
 <hr/>
 </div>
 
-* Access the home page!
+* Create a message under the chat
 <div align='center'>
-<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/99e7544d-5b6a-4ab7-a145-636fe1841469">
+<img height="350px" src="https://github.com/MohamedRagaab/Instabug-Backend-Challenge/assets/38363762/e6fc4235-4f36-4228-b0e1-593efb2581bb">
 <hr/>
 </div>
 
-## Some Validations
-* Login with wrong credentials
+* search the message under the chat
 <div align='center'>
-<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/b1bd7b41-33d2-4803-8845-2cff4937bd7d">
+<img height="350px" src="https://github.com/MohamedRagaab/Instabug-Backend-Challenge/assets/38363762/405315fe-1abe-4438-a5c0-ae58c91e5691">
 <hr/>
 </div>
 
-* Register with the same email or username
-<div align='center'>
-<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/c2f016af-321d-45e7-a4da-55db41d07de9">
-<hr/>
-</div>
+## Task Checklist
+- [ ] Application Endpoints
+- [ ] Chat Endpoints
+- [ ] Message Endpoint
+- [ ] Using elasticsearch for searching messages
+- [ ] Using queuing system (Sidekiq)
+- [ ] Containerize the app (docker-compose.yml)
+- [ ] Using in-memory DB (Redis)
+- [ ] Writing a Readme file
+
