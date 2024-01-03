@@ -9,17 +9,83 @@
 ## Features 🥇
 * Easy create, update and show apps, chats and messages using Ruby on Rails framework.
 ## Cloning the repo and starting the app
-* clone the repository and open the project in visual studio or any I.
+* clone the repository and open the project in any IDE
 ``` bash
 git clone https://github.com/MohamedRagaab/Instabug-Backend-Challenge.git
 cd Instabug-Backend-Challenge
 ```
-## Usage 🚀
-* Build the docker image and run the container!
+* You can run the following command to start the app
 ``` bash
-docker build -t your_image_name:tag .
-docker run -p 8080:8080 your_image_name:tag
+docker compose up
 ```
+or 
+``` bash
+docker-compose up
+```
+## Usage 🚀
+* Here is the list of the RESTful APIs
+  - Application:
+ 
+    - Create a new application:
+        ``` bash
+        POST /api/v1/applications
+        ```
+    - Read a specific application:
+        ``` bash
+        GET /api/v1/applications/:token
+        ```
+    - Update a specific application:
+        ``` bash
+        PUT /api/v1/applications/:token
+        ```
+
+  - Chats:
+ 
+    - Create a new chat:
+        ``` bash
+        POST /api/v1/applications/:token/chats
+        ```
+    - List chats under a specific application:
+        ``` bash
+        GET /api/v1/applications/:token/chats
+        ```
+        
+  - Message:
+ 
+    - Create a new message:
+        ``` bash
+        POST /api/v1/applications/:token/chats/:number/messages
+        ```
+    - Read a specific message under a chat:
+        ``` bash
+        GET /api/v1/applications/:token/chats/:chat_number/messages/:message_number
+        ```
+    - Update a specific message:
+        ``` bash
+        PUT /api/v1/applications/:token/chats/:number/messages/:id
+        ```
+    - List all messages under a specific chat:
+          ``` bash
+        GET /api/v1/applications/:token/chats/:number/messages
+        ```  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Example 🖼️
 * Register your account
 <div align='center'>
