@@ -18,6 +18,8 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    depends_on:
+      - mysql
 
   # Elasticsearch service
   elasticsearch:
@@ -28,6 +30,8 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    depends_on:
+      - mysql
 
   # Sidekiq worker
   sidekiq:
@@ -42,12 +46,14 @@ services:
       MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       REDIS_URL: ${REDIS_URL}
+    depends_on:
+      - elasticsearch
 
   # cron job service
   job:
     build: .
     container_name: job
-    command: "bash -c 'while :; do bundle exec rake update_counts:chats_and_messages_counts; sleep 120; done'"
+    command: "bash -c 'while :; do sleep 120 && bundle exec rake update_counts:chats_and_messages_counts; done'"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
       RAILS_ENV: ${RAILS_ENV}
@@ -56,16 +62,14 @@ services:
       MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       REDIS_URL: ${REDIS_URL}
+    depends_on:
+      - rails
 
   # Rails application service
   rails:
     build: .
     container_name: rails
-    command: >
-      bash -c "
-        whenever --update-crontab &&
-        ./bin/rails server
-      "
+    command: "./bin/rails server"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
       RAILS_ENV: ${RAILS_ENV}
@@ -81,4 +85,3 @@ services:
       - redis
       - elasticsearch
       - sidekiq
-      - job
