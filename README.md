@@ -1,24 +1,53 @@
-# README
+# Chat System
+* Instabug Backend Challenge for the Backend Developer II position.
+## Languages and frameworks 📑
+* Ruby on Rails
+* MySql
+* ElasticSearch
+* Redis
+* Sidekiq
+## Features 🥇
+* Easy create, update and show apps, chats and messages using Ruby on Rails framework.
+## Cloning the repo and starting the app
+* clone the repository and open the project in visual studio or any I.
+``` bash
+git clone https://github.com/MohamedRagaab/Vodafone-Registration-Login-Task.git
+cd Vodafone-Registration-Login-Task
+```
+## Usage 🚀
+* Build the docker image and run the container!
+``` bash
+docker build -t your_image_name:tag .
+docker run -p 8080:8080 your_image_name:tag
+```
+## Example 🖼️
+* Register your account
+<div align='center'>
+<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/1e8ec78e-3caa-4ab1-b837-c1c1f7ee54f7">
+<hr/>
+</div>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Login with your credentials
+<div align='center'>
+<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/1f45f519-48f5-4e63-95ec-420fce4520c2">
+<hr/>
+</div>
 
-Things you may want to cover:
+* Access the home page!
+<div align='center'>
+<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/99e7544d-5b6a-4ab7-a145-636fe1841469">
+<hr/>
+</div>
 
-* Ruby version
+## Some Validations
+* Login with wrong credentials
+<div align='center'>
+<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/b1bd7b41-33d2-4803-8845-2cff4937bd7d">
+<hr/>
+</div>
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Register with the same email or username
+<div align='center'>
+<img height="400px" src="https://github.com/MohamedRagaab/MohamedRagaab/assets/38363762/c2f016af-321d-45e7-a4da-55db41d07de9">
+<hr/>
+</div>

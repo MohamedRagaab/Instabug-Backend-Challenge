@@ -1,8 +1,7 @@
 # syntax = docker/dockerfile:1
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.0.6
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+# Use the official Ruby image
+FROM ruby:3.0.6-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -13,6 +12,17 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
+# Install Mariadb client library
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y default-libmysqlclient-dev
+
+# Install cron
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y cron && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Install the whenever gem
+RUN gem install whenever
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
@@ -23,7 +33,8 @@ RUN apt-get update -qq && \
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
+RUN bundle config set --local without 'development test' && \
+    bundle install --jobs "$(nproc)" --retry 5 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
@@ -45,6 +56,9 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
+# Install cron
+COPY --from=build /usr/sbin/cron /usr/sbin/cron
+
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
@@ -52,7 +66,6 @@ COPY --from=build /rails /rails
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
-USER rails:rails
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]

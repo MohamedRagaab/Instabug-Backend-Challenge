@@ -2,9 +2,12 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['MYSQL_USERNAME'] || 'chatSystem' %>
-  host: <%= ENV['MYSQL_HOST'] || 'localhost' %>
+  username: <%= ENV['MYSQL_USERNAME'] || 'root' %>
+  password: <%= ENV['MYSQL_PASSWORD'] || '1234' %>
+  host: <%= ENV['MYSQL_HOST'] || 'mysql' %>
   database: <%= ENV['MYSQL_DATABASE'] || 'chat_system_DB' %>
+  port: <%= ENV['MYSQL_PORT'] || 3306 %>
+
 
 development:
   <<: *default

@@ -92,6 +92,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chronic (0.10.2)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -207,7 +208,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
-    rake (13.1.0)
+    rake (13.0.3)
     rdoc (6.6.2)
       psych (>= 4.0.0)
     redis (5.0.8)
@@ -258,6 +259,8 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.12)
@@ -276,6 +279,7 @@ DEPENDENCIES
   mysql2 (~> 0.5)
   puma (>= 5.0)
   rails (~> 7.1.2)
+  rake (= 13.0.3)
   redis (>= 4.0.1)
   selenium-webdriver
   sidekiq
@@ -285,6 +289,8 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  whenever
+  zeitwerk
 
 RUBY VERSION
    ruby 3.0.6p216

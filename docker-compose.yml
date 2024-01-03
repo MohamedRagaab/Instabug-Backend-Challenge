@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # MySQL service
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+
+  # Redis service
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  # Elasticsearch service
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  # Sidekiq worker
+  sidekiq:
+    build: .
+    command: "bundle exec sidekiq"
+    container_name: sidekiq
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
+
+  # cron job service
+  job:
+    build: .
+    container_name: job
+    command: "bash -c 'while :; do bundle exec rake update_counts:chats_and_messages_counts; sleep 120; done'"
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
+
+  # Rails application service
+  rails:
+    build: .
+    container_name: rails
+    command: >
+      bash -c "
+        whenever --update-crontab &&
+        ./bin/rails server
+      "
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
+      - sidekiq
+      - job
